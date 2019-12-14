@@ -10,10 +10,6 @@ RUN set -ex && \
  git \
  nodejs
 
-RUN mkdir -p /etc/apt/sources.list.d/
-
-RUN chmod 777 -R /etc/apt/sources.list.d/
-
 RUN curl https://cli-assets.heroku.com/install.sh | sh
 
 RUN adduser -D herokuser

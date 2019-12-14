@@ -1,0 +1,16 @@
+version: '3.6'
+
+services:
+  heroku-cli:
+    image: welikecode/heroku-cli
+    container_name: heroku-cli
+
+    volumes:
+      - herokudata:/var/lib/heroku/data
+
+    environment:
+     HEROKU_API_KEY: $HEROKU_API_KEY
+     ACCEPT_EULA: "Y"
+
+volumes:
+  herokudata:

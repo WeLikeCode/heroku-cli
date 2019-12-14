@@ -36,6 +36,12 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+RUN set -ex && \
+ apk add --no-cache --virtual \
+ shadow
+
+RUN ["usermod", "-s", "/bin/bash", "herokuser"]
+
 USER herokuser
 
 ENTRYPOINT ["docker-entrypoint.sh"]

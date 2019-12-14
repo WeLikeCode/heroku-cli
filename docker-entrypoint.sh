@@ -27,12 +27,14 @@ _main() {
 	fi
 
   if [ "$1" = 'sh' ]; then
-    set -- bash "${@:2}"
+    set -- /bin/bash "${@:2}"
+    echo "$@"
 	  exec "$@"
 	fi
 
 	if [ "$1" = '/bin/sh' ]; then
-	  set -- bash "${@:2}"
+	  set -- /bin/bash "${@:2}"
+	  echo "$@"
 	  exec "$@"
 	fi
 

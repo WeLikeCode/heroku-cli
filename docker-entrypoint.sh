@@ -11,8 +11,8 @@ _is_sourced() {
 
 _main() {
 	# if first arg looks like a flag, assume we want to run heroku commands
-	echo "$@"
-	echo "${@:2}"
+	#echo "$@"
+	#echo "${@:2}"
 	if [ "${1:0:1}" = '-' ]; then
 	  echo "First if"
 		set -- heroku "$@"
@@ -27,14 +27,16 @@ _main() {
 	fi
 
   if [ "$1" = 'sh' ]; then
-    set -- /bin/bash "${@:2}"
-    echo "$@"
+    #set -- /bin/bash "${@:2}"
+    #echo "GOT SH command"
+    #echo "$@"
 	  exec "$@"
 	fi
 
 	if [ "$1" = '/bin/sh' ]; then
-	  set -- /bin/bash "${@:2}"
-	  echo "$@"
+	  #set -- /bin/bash "${@:2}"
+	  #echo "GOT SH command"
+	  #echo "$@"
 	  exec "$@"
 	fi
 

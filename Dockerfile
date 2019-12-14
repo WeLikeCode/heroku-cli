@@ -42,6 +42,9 @@ RUN set -ex && \
 
 RUN ["usermod", "-s", "/bin/bash", "herokuser"]
 
+RUN set -ex && \
+ apk del shadow
+
 USER herokuser
 
 ENTRYPOINT ["docker-entrypoint.sh"]

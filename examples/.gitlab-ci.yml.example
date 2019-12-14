@@ -1,0 +1,45 @@
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+
+default:
+    image: welikecode/heroku-cli:7.3-alpine
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  HEROKU_API_KEY: $HEROKU_API_KEY
+
+
+herokudeploy:
+  type: deploy
+  variables:
+    HEROKU_API_KEY: $HEROKU_API_KEY
+    HEROKU_USERNAME: $HEROKU_USERNAME
+    HEROKU_APP: $HEROKU_APP
+
+  script:
+   - heroku apps
+   - git status
+   - git remote -v
+   - echo "machine git.heroku.com" >> ~/.netrc
+   - echo "    login $HEROKU_USERNAME" >> ~/.netrc
+   - echo "    password $HEROKU_API_KEY" >> ~/.netrc
+   - chmod 600 ~/.netrc
+   - heroku git:remote -a $HEROKU_APP
+   - git status
+   - git remote -v
+   - git config --global user.email "$HEROKU_USERNAME@gmail.com"
+   - git config --global user.name "$HEROKU_USERNAME"
+   - git status
+   - git config --global -l
+   - git push heroku HEAD:master --force
+   - rm -f ~/.netrc
+
+  only:
+   - master
+  tags:
+   - docker
+  when: manual

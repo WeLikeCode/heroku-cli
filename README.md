@@ -13,5 +13,6 @@ docker-compose -f  docker-compose.local.yml run heroku-cli [command]
 
 **BUT WHY?!**
 
-We use GITLAB community edition and we are in love with it's CI\CD.
+We use GITLAB community edition and we are in love with it's CI\CD. See the examples folder from github.
+
 

@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   heroku-cli:
-    image: welikecode/heroku-cli
+    image: welikecode/heroku-cli:7.3-alpine
     container_name: heroku-cli
 
     volumes:

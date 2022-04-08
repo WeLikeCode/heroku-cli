@@ -2,9 +2,6 @@ version: '3.6'
 
 services:
   heroku-cli:
-    build:
-      dockerfile: Dockerfile
-      context: .
     image: welikecode/heroku-cli:7.6-ubuntu
     container_name: heroku-cli
 

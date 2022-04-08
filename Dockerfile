@@ -1,18 +1,15 @@
-FROM alpine:3.9
+FROM ubuntu:20.04
 
 RUN set -ex && \
- apk add --no-cache --virtual .fetch-deps \
- curl
+ apt update && \
+    DEBIAN_FRONTEND=noninteractive apt install -y  apt-transport-https ca-certificates gnupg curl git nodejs sudo --no-install-recommends && \
+    apt autoclean && \
+    apt autoremove
 
-RUN set -ex && \
- apk add --no-cache --virtual .needed-deps \
- bash \
- git \
- nodejs
-
+RUN update-ca-certificates
 RUN curl https://cli-assets.heroku.com/install.sh | sh
 
-RUN adduser -D herokuser
+RUN adduser herokuser
 
 ENV HEROKUDATA /var/lib/heroku/data
 # this 777 will be replaced by 700 at runtime (allows semi-arbitrary "--user" values)
@@ -21,29 +18,16 @@ VOLUME /var/lib/heroku/data
 
 WORKDIR /var/lib/heroku/data
 
-#RUN set -ex && \
-#      apk del .fetch-deps
-
-## Export the Python environment variables in .profile.d
-#RUN echo 'export PATH=$HOME/.heroku/python/bin:$PATH PYTHONUNBUFFERED=true PYTHONHOME=/app/.heroku/python LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LIBRARY_PATH LD_LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LD_LIBRARY_PATH LANG=${LANG:-en_US.UTF-8} PYTHONHASHSEED=${PYTHONHASHSEED:-random} PYTHONPATH=${PYTHONPATH:-/app/user/}' > /app/.profile.d/python.sh
-#RUN chmod +x /app/.profile.d/python.sh
-#
-#ONBUILD ADD requirements.txt /app/user/
-#ONBUILD RUN /app/.heroku/python/bin/pip install -r requirements.txt
-#ONBUILD ADD . /app/user/
+# Cleanup
+ENV SUDO_FORCE_REMOVE=yes
+RUN  apt purge -yq sudo && apt-get clean && \
+  rm -rf /var/lib/apt
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-RUN set -ex && \
- apk add --no-cache --virtual \
- shadow
-
 RUN ["usermod", "-s", "/bin/bash", "herokuser"]
-
-RUN set -ex && \
- apk del shadow
 
 USER herokuser
 
